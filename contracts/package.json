@@ -1,0 +1,29 @@
+{
+  "name": "iotex-depin-contracts",
+  "version": "1.0.0",
+  "description": "Smart Contracts for IoTeX DePIN Kit",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network iotex-testnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network iotex-mainnet",
+    "node": "hardhat node"
+  },
+  "keywords": [
+    "iotex",
+    "depin",
+    "blockchain",
+    "solidity"
+  ],
+  "author": "IoTeX DePIN Kit",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.3.1"
+  }
+}

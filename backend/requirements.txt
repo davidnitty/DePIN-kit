@@ -1,0 +1,37 @@
+# IoTeX DePIN Kit - Backend Requirements
+
+# Web3 and Blockchain
+web3==6.11.3
+eth-account==0.10.0
+eth-utils==2.2.0
+eth-abi==4.2.0
+
+# Flask and API
+flask==3.0.0
+flask-cors==4.0.0
+werkzeug==3.0.1
+
+# Data Processing
+pandas==2.1.3
+numpy==1.26.2
+
+# AI/ML
+tensorflow==2.15.0
+keras==2.15.0
+scikit-learn==1.3.2
+
+# IPFS
+ipfshttpclient==0.8.0a
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Database
+sqlite3
+
+# Development
+pytest==7.4.3
+pytest-cov==4.1.0
+black==23.12.0
+flake8==6.1.0
