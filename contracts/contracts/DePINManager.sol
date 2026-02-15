@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title DePINManager
@@ -91,7 +91,7 @@ contract DePINManager is Ownable, Pausable, ReentrancyGuard {
     }
 
     // Constructor
-    constructor() {
+    constructor() Ownable(msg.sender) {
         _deviceCounter = 0;
         _metricsCounter = 0;
     }

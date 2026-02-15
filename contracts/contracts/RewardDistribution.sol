@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./DePINManager.sol";
 
 /**
@@ -59,7 +59,7 @@ contract RewardDistribution is Ownable, Pausable, ReentrancyGuard {
         _;
     }
 
-    constructor(address _depinManagerAddress) {
+    constructor(address _depinManagerAddress) Ownable(msg.sender) {
         depinManager = DePINManager(_depinManagerAddress);
     }
 
@@ -133,7 +133,8 @@ contract RewardDistribution is Ownable, Pausable, ReentrancyGuard {
         require(_slashPercentage <= 100, "Invalid slash percentage");
         require(_violationType != ViolationType.None, "Invalid violation type");
 
-        (, , , , uint256 totalRewards, , ) = depinManager.getDeviceInfo(_deviceId);
+        DePINManager.Device memory device = depinManager.getDeviceInfo(_deviceId);
+        uint256 totalRewards = device.totalRewards;
 
         uint256 slashAmount = (totalRewards * _slashPercentage) / 100;
         require(slashAmount > 0, "No rewards to slash");
@@ -169,18 +170,18 @@ contract RewardDistribution is Ownable, Pausable, ReentrancyGuard {
     {
         require(canClaim[_deviceId], "No claimable rewards");
 
-        (, address owner, , , uint256 totalRewards, , ) = depinManager.getDeviceInfo(_deviceId);
-        require(owner == msg.sender, "Not device owner");
+        DePINManager.Device memory device = depinManager.getDeviceInfo(_deviceId);
+        require(device.owner == msg.sender, "Not device owner");
 
-        require(totalRewardPool >= totalRewards, "Insufficient pool balance");
-        require(totalRewards > 0, "No rewards to claim");
+        require(totalRewardPool >= device.totalRewards, "Insufficient pool balance");
+        require(device.totalRewards > 0, "No rewards to claim");
 
         canClaim[_deviceId] = false;
-        totalRewardPool -= totalRewards;
+        totalRewardPool -= device.totalRewards;
 
-        payable(owner).transfer(totalRewards);
+        payable(device.owner).transfer(device.totalRewards);
 
-        emit RewardsClaimed(_deviceId, owner, totalRewards, block.timestamp);
+        emit RewardsClaimed(_deviceId, device.owner, device.totalRewards, block.timestamp);
     }
 
     /**
